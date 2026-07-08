@@ -26,9 +26,14 @@ def run_preprocessing(input_path, output_dir):
     X_test[numerical_cols] = scaler.transform(X_test[numerical_cols])
 
     # 6. Menggabungkan kembali fitur dan target untuk disimpan
-    train_data = pd.concat([pd.DataFrame(X_train, columns=X.columns), y_train.reset_index(drop=True)], axis=1)
-    test_data = pd.concat([pd.DataFrame(X_test, columns=X.columns), y_test.reset_index(drop=True)], axis=1)
+    # 6. Menggabungkan kembali fitur dan target untuk disimpan (DIPERBAIKI)
+    X_train = X_train.reset_index(drop=True)
+    y_train = y_train.reset_index(drop=True)
+    train_data = pd.concat([X_train, y_train], axis=1)
 
+    X_test = X_test.reset_index(drop=True)
+    y_test = y_test.reset_index(drop=True)
+    test_data = pd.concat([X_test, y_test], axis=1)
     # 7. Menyimpan data yang sudah diproses
     os.makedirs(output_dir, exist_ok=True)
     train_data.to_csv(os.path.join(output_dir, 'train.csv'), index=False)
